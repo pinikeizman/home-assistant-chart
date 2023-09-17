@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "home-assistant.fullname" . }}
+  labels:
+    {{- include "home-assistant.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port | default 8123 }}
+      targetPort: {{ .Values.service.targetPort | default 8123 }}
+      nodePort: {{ .Values.service.targetPort | default 30123 }}
+      protocol: TCP
+      name:  {{ .Values.service.portName | default "defaul-port" | quote }}
+  selector:
+    {{- include "home-assistant.selectorLabels" . | nindent 4 }}
